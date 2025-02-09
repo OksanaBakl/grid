@@ -60,10 +60,10 @@ var reduce = function(nums, fn, init) {
 
  // Example usage:
 const nums = [1, 2, 3, 4];
-const sum = (accum, curr) => accum + curr;
+// const sum = (accum, curr) => accum + curr;
 const init = 0;
 
-console.log(reduce(nums, sum, init)); 
+// console.log(reduce(nums, sum, init)); 
 
 /**
  * @param {Function[]} functions
@@ -85,3 +85,40 @@ const functions = [x => x + 1, x => x * x, x => 2 * x];
 const x = 4;
 composedFn = compose(functions);
 console.log(composedFn(x)); // Output: 65
+
+/**
+ * @param {Function} fn
+ * @return {Function}
+ */
+function memoize(fn) {
+    const cache = new Map();
+    let callCount = 0; // Track the number of actual function calls
+
+    const memoizedFn = (...args) => {
+        const key = JSON.stringify(args); // Create a unique key for arguments
+
+        if (cache.has(key)) {
+            console.log('Return cached result if exists', cache.get(key));
+            return cache.get(key); // Return cached result if exists
+        }
+        callCount++; // Increment call count for new function execution
+        const result = fn(...args);
+        cache.set(key, result); // Store result in cache
+        return result;
+    };
+
+    memoizedFn.getCallCount = () => callCount; // Function to retrieve call count
+
+    return memoizedFn;
+}
+
+// Example usage:
+const sum = (a, b) => a + b;
+const memoizedSum = memoize(sum);
+
+console.log(memoizedSum(2, 2)); // Output: 4 (actual call)
+console.log(memoizedSum(2, 2)); // Output: 4 (cached)
+console.log(memoizedSum.getCallCount()); // Output: 1
+console.log(memoizedSum(1, 2)); // Output: 3 (actual call)
+console.log(memoizedSum.getCallCount()); // Output: 2
+
