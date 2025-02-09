@@ -64,3 +64,24 @@ const sum = (accum, curr) => accum + curr;
 const init = 0;
 
 console.log(reduce(nums, sum, init)); 
+
+/**
+ * @param {Function[]} functions
+ * @return {Function}
+ */
+var compose = function(functions) {
+    
+    return function(x) {
+        let result = x;
+        for (let i=functions.length-1; i>=0; i--)
+            {
+                result = functions[i](result);
+            }
+        return result;
+    }
+};
+
+const functions = [x => x + 1, x => x * x, x => 2 * x];
+const x = 4;
+composedFn = compose(functions);
+console.log(composedFn(x)); // Output: 65
