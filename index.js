@@ -98,7 +98,6 @@ function memoize(fn) {
         const key = JSON.stringify(args); // Create a unique key for arguments
 
         if (cache.has(key)) {
-            console.log('Return cached result if exists', cache.get(key));
             return cache.get(key); // Return cached result if exists
         }
         callCount++; // Increment call count for new function execution
@@ -122,3 +121,31 @@ console.log(memoizedSum.getCallCount()); // Output: 1
 console.log(memoizedSum(1, 2)); // Output: 3 (actual call)
 console.log(memoizedSum.getCallCount()); // Output: 2
 
+function timeLimit(fn, t) {
+    return async function(...args) {
+      return new Promise(async (resolve, reject) => {
+        const timeout = setTimeout(() => reject("Time Limit Exceeded"), t);
+        try {
+          const result = await fn(...args);
+          clearTimeout(timeout);
+          resolve(result);
+        } catch (err) {
+          clearTimeout(timeout);
+          reject(err);
+        }
+      });
+    };
+  }
+  
+  // Example Usage:
+  const fn = async (n) => { 
+    await new Promise(res => setTimeout(res, 100)); 
+    return n * n; 
+  };
+  
+  const limited = timeLimit(fn, 50);
+  
+  limited(5)
+    .then(result => console.log({"resolved": result}))
+    .catch(error => console.log({"rejected": error, "time": 50}));
+  
