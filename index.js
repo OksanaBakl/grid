@@ -148,4 +148,17 @@ function timeLimit(fn, t) {
   limited(5)
     .then(result => console.log({"resolved": result}))
     .catch(error => console.log({"rejected": error, "time": 50}));
-  
+    
+  /**
+   * 
+ * @param {number[]} arr
+ * @param {Function} fn
+ * @return {number[]}
+ */
+var map = function(arr, fn) {
+    let res = [];
+    for (let i=0; i<arr.length; i++){        
+        res.push(fn(arr[i], i));
+    }
+    return res;
+};
