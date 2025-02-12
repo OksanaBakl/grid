@@ -148,7 +148,7 @@ function timeLimit(fn, t) {
   limited(5)
     .then(result => console.log({"resolved": result}))
     .catch(error => console.log({"rejected": error, "time": 50}));
-    
+
   /**
    * 
  * @param {number[]} arr
@@ -162,3 +162,23 @@ var map = function(arr, fn) {
     }
     return res;
 };
+
+function twoSum(nums, target) {
+    let map = new Map();
+    
+    for (let i = 0; i < nums.length; i++) {
+        let part = target - nums[i];
+        
+        if (map.has(part)) {
+            return [map.get(part), i];
+        }
+        map.set(nums[i], i);
+    }
+    
+    return [];
+}
+
+// Example Usage:
+console.log(twoSum([2,7,11,15], 9)); // Output: [0,1]
+console.log(twoSum([3,2,4], 6)); // Output: [1,2]
+console.log(twoSum([3,3], 6)); // Output: [0,1]
