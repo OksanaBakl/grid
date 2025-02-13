@@ -163,20 +163,20 @@ var map = function(arr, fn) {
     return res;
 };
 
-function twoSum(nums, target) {
-    let map = new Map();
-    
-    for (let i = 0; i < nums.length; i++) {
-        let part = target - nums[i];
-        
-        if (map.has(part)) {
-            return [map.get(part), i];
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    for (let i=0; i<nums.length; i++){
+        for (let j=i+1; j<nums.length; j++){
+            if (nums[j] === target - nums[i]){
+                return[i,j];
+            }
         }
-        map.set(nums[i], i);
     }
-    
-    return [];
-}
+};
 
 // Example Usage:
 console.log(twoSum([2,7,11,15], 9)); // Output: [0,1]
